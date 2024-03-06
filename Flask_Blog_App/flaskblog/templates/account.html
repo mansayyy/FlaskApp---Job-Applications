@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <div class="media">
+      <img class="rounded-circle account-img" src="{{ image_file }}">
+      <div class="media-body">
+        <h2 class="account-heading">{{ current_user.username }}</h2>
+        <p class="text-secondary">{{ current_user.email }}</p>
+      </div>
+    </div>
+
+      <form method = "POST" action="" enctype="multipart/form-data">
+          {{ form.csrf_token }}
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Account Info</legend>
+              <div class="form-group">
+                  {{ form.username.label(class="form-control-label") }}
+                  {% if form.username.errors %}
+                      {{ form.username(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.username.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.username(class="form-control form-control-lg") }}
+                  {% endif %}
+  
+                  </div>
+              <div class="form-group">
+                  {{ form.email.label(class="form-control-label") }}
+                  <br>
+                  {% if form.email.errors %}
+                      {{ form.email(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.email.errors %}
+                          <span>{{error}}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.email(class="form-control form-control-lg") }}
+                  {% endif %}
+              </div>
+
+              <div class="form-group mb-4">
+                {{ form.picture.label() }} <br>
+                {{ form.picture(class="form-control-file") }}
+                {% if form.picture.errors %}
+                  {% for error in form.picture.errors %}
+                  <span class="text-danger">{{error}}</span><br>
+                  {% endfor %}
+                {% endif %}
+              </div>
+          </fieldset>
+
+
+      
+          <div class="form-group">
+              {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+      </form>
+  
+  </div>
+  <h3>Your Applications</h3>
+
+  {% for ap in applications.items %}
+    <article class="media content-section">
+     
+      <div class="row">
+        <div class="col-md-1">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/'+ap.author.image_file) }}">
+        </div>
+        <div class="col-md-11">
+          <div class="media-body">
+            <div class="article-metadata d-flex justify-content-between align-items-center">
+              <a class="mr-2 username" href="{{url_for('users.user_applications', username=ap.author.username)}}">{{ ap.author.username }}</a>
+              <small class="text-muted">{{ ap.date_applied.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p style="margin: 0;">
+                  <span class="role-name">{{ ap.jobrole }}</span><br>
+                  <span class="text-muted jobdetails">{{ ap.companyname }}</span>
+                </p>
+              </div>
+              <div class="col-md-6 text-right">
+                <p style="margin: 0;">
+                  <span class="role-name">{{ ap.joblocation }}</span>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 d-flex justify-content-between align-items-center">
+                <p class="jobdetails job-website">Website: <a class="article-title" style="text-decoration: none;" href="{{  ap.jobwebsite }}" target="_blank">{{ ap.jobwebsite }}</a> </p>
+           
+                <a href="{{ url_for('applications.application', application_id = ap.id) }}" class="btn float-right jobbutton"><i class="fas fa-arrow-right" style="color: white;"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+  </article>
+{% endfor %}
+{% for page_num in applications.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page_num %}
+    {% if applications.page == page_num %}
+    <a class="btn btn-info mb-4" href="{{url_for('users.account', username = current_user.username,page=page_num)}}"> {{page_num}} </a>
+    {% else %}
+    <a class="btn btn-outline-info mb-4" href="{{url_for('users.account', username = current_user.username, page=page_num)}}"> {{page_num}} </a>
+    {% endif %}
+  {% else %}
+  {% endif %}
+{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="mb-4">
+
+  <a class="margin-bottom: 5px" href="{{ url_for('users.allusers') }}"> Back to all users </a> 
+</div>
+<!-- Search Bar -->
+<form action="{{ url_for('users.allusers') }}" method="GET" class="form-inline mb-4">
+  <div class="form-group mr-2 mb-2">
+    <input type="text" name="username_query" class="form-control" placeholder="Search by username">
+  </div>
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<!-- Display Users -->
+{% for user in users.items %}
+  <article class="media content-section">
+    <div class="row">
+      <div class="col-md-1">
+        <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
+      </div>
+      <div class="col-md-11">
+        <div class="media-body">
+          <div class="article-metadata d-flex justify-content-between align-items-center">
+            <a class="mr-2 username" href="{{ url_for('users.user_applications', username=user.username) }}">{{ user.username }}</a>
+            <small class="text-muted">{{ user.email }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+{% endfor %}
+
+<!-- Pagination -->
+{% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page_num %}
+    {% if users.page == page_num %}
+      <a class="btn btn-info mb-4" href="{{ url_for('users.allusers', page=page_num) }}">{{ page_num }}</a>
+    {% else %}
+      <a class="btn btn-outline-info mb-4" href="{{ url_for('users.allusers', page=page_num) }}">{{ page_num }}</a>
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% endblock content %}

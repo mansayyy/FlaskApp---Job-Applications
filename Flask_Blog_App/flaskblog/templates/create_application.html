@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <form method = "POST" action="">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legendvalue }}</legend>
+
+            <div class="form-group">
+                {{ form.companyname.label(class="form-control-label") }}
+                {% if form.companyname.errors %}
+                    {{ form.companyname(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.companyname.errors %}
+                        <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.companyname(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.jobrole.label(class="form-control-label") }}
+                {% if form.jobrole.errors %}
+                    {{ form.jobrole(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.jobrole.errors %}
+                        <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.jobrole(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.joblocation.label(class="form-control-label") }}
+                {% if form.joblocation.errors %}
+                    {{ form.joblocation(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.joblocation.errors %}
+                        <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.joblocation(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.jobwebsite.label(class="form-control-label") }}
+                {% if form.jobwebsite.errors %}
+                    {{ form.jobwebsite(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.jobwebsite.errors %}
+                        <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.jobwebsite(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.jobdescription.label(class="form-control-label") }}
+                {% if form.jobdescription.errors %}
+                    {{ form.jobdescription(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.jobdescription.errors %}
+                        <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.jobdescription(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+    
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
